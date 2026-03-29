@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "diabetes-streamlit"
+version = "0.1.0"
+description = "Test Afi"
+authors = ["Dani <danieldominguezvazquez@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+dill = "*"
+jsonlines = "*"
+streamlit = "^1.28.0"
+plotly = "^5.17.0"
+
+[tool.poetry.group.datawrangling.dependencies]
+pandas = "*"
+numpy = "*"
+
+
+[tool.poetry.group.ml.dependencies]
+scikit-learn = "*"
+xgboost = "*"
+feature-engine = "*"
+scipy = "*"
+
+[tool.poetry.group.viz.dependencies]
+matplotlib = "*"
+seaborn = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pytest-cov = "*"
+black = "*"
+jupyterlab = "*"
+jupyterlab-git = "*"
+ipython = "*"
+altair = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+# package-mode = False
+
