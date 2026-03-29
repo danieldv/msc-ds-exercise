@@ -2,14 +2,36 @@
 Configuration management for the Streamlit Diabetes Prediction application.
 """
 import os
+from pathlib import Path
 from typing import Dict, Tuple
+
+# Directory containing this file (app root when deployed: repo root on Streamlit Cloud)
+_PROJECT_ROOT = Path(__file__).resolve().parent
+
+
+def _resolve_model_path() -> str:
+    """
+    Resolve the pickle path for local runs, Docker, and Streamlit Cloud.
+
+    - If MODEL_PATH is unset: ``<project>/best_diabetes_model.pkl`` (next to config.py).
+    - If MODEL_PATH is absolute: use as-is.
+    - If MODEL_PATH is relative: resolve against the project root (not the process cwd),
+      so ``streamlit run path/to/app.py`` from another folder still works.
+    """
+    raw = os.getenv("MODEL_PATH", "").strip()
+    if raw:
+        p = Path(raw)
+        if p.is_absolute():
+            return str(p)
+        return str((_PROJECT_ROOT / p).resolve())
+    return str(_PROJECT_ROOT / "best_diabetes_model.pkl")
 
 
 class Config:
     """Application configuration loaded from environment variables."""
     
-    # Model configuration
-    MODEL_PATH: str = os.getenv("MODEL_PATH", "best_diabetes_model.pkl")
+    # Model configuration (resolved at import time)
+    MODEL_PATH: str = _resolve_model_path()
     
     # Streamlit configuration
     STREAMLIT_PORT: int = int(os.getenv("STREAMLIT_PORT", "8501"))
