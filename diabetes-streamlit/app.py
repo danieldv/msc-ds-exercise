@@ -13,6 +13,7 @@ import plotly.express as px
 from datetime import datetime
 import sys
 import os
+from pathlib import Path
 
 # Add config to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -150,7 +151,8 @@ def show_prediction_page(model, feature_names):
     # Header
     col1, col2 = st.columns([1, 4])
     with col1:
-        st.image('./logo_afi.png', width=150)
+        if Path(Config.LOGO_PATH).is_file():
+            st.image(Config.LOGO_PATH, width=150)
     with col2:
         st.title("Diabetes Progression Prediction")
         st.markdown("Enter patient information to predict diabetes progression score.")
