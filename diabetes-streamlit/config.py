@@ -27,11 +27,25 @@ def _resolve_model_path() -> str:
     return str(_PROJECT_ROOT / "best_diabetes_model.pkl")
 
 
+def _resolve_logo_path() -> str:
+    """
+    Logo next to config.py by default; override with LOGO_PATH (absolute or relative to project root).
+    """
+    raw = os.getenv("LOGO_PATH", "").strip()
+    if raw:
+        p = Path(raw)
+        if p.is_absolute():
+            return str(p)
+        return str((_PROJECT_ROOT / p).resolve())
+    return str(_PROJECT_ROOT / "logo_afi.png")
+
+
 class Config:
     """Application configuration loaded from environment variables."""
     
     # Model configuration (resolved at import time)
     MODEL_PATH: str = _resolve_model_path()
+    LOGO_PATH: str = _resolve_logo_path()
     
     # Streamlit configuration
     STREAMLIT_PORT: int = int(os.getenv("STREAMLIT_PORT", "8501"))
